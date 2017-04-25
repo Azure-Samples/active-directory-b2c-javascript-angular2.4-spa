@@ -14,15 +14,11 @@ angular.module('todoApp', ['ngRoute','ngHello'])
 
     //These values need to be updated with the specific tenant and its policies.
     var tenantName = "stevenzhou.onmicrosoft.com";
-    var signInPolicyName = "B2C_1_TestSignIn01";
     var signInSignUpPolicyName = "B2C_1_TestSignInSignUp01";
-    var editProfilePolicyName = "B2C_1_TestProfile01";
     var redirect_uri = "http://localhost:65328/";
 
     //No need to modify the below values
-    var helloJsSignPolicy = "adB2CSignIn";
     var helloJsSignInSignUpPolicy = "adB2CSignInSignUp";
-    var helloJsEditProfilePolicy = "adB2CEditProfile";
 
     /*
      * B2C SignIn SignUp Policy Configuration
