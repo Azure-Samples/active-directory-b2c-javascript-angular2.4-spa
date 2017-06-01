@@ -7,10 +7,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent }         from '../components/app.component/app.component';
 import { TodoComponent }        from '../components/todo.component/todo.component';
 import { HomeComponent }        from '../components/home.component/home.component';
-import { TodoService }          from '../services/todo.service';
-
-declare function require(name: string) : any;
-var hello = require('../../../lib/hello.all.js');
+import { TodoService }          from '../services/todo.service/todo.service';
+import { MsalService }          from '../services/msal.service/msal.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,28 +24,11 @@ const routes: Routes = [
         TodoComponent
     ],
     providers: [
-        TodoService
+        TodoService,
+        MsalService
     ],
     bootstrap: [AppComponent]
 })
 
 export class AppModule {
-   
-    //These values need to be updated with the specific tenant and its policies.
-    private tenantName: string = "stevenzhou.onmicrosoft.com";
-    private signInSignUpPolicyName: string = "B2C_1_TestSignInSignUp01";
-    private post_login_redirect_uri: string = "http://localhost:3000/redirect.html";
-    private post_logout_redirect_uri: string = "http://localhost:3000";
-    private applicationId: string = 'aa4c1c98-f36a-4876-8d0c-d9b48a85fed3';
-    
-    /*
-     * B2C SignIn SignUp Policy Configuration
-     */
-    aadb2cObj: any = hello.aadb2c.init(
-        this.tenantName, 
-        this.applicationId, 
-        this.signInSignUpPolicyName, 
-        this.post_login_redirect_uri,
-        this.post_logout_redirect_uri
-    );
 };

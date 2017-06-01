@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var todo_service_1 = require('../../services/todo.service');
-var hello = require('../../../lib/hello.all.js');
+var todo_service_1 = require('../../services/todo.service/todo.service');
+var msal_service_1 = require('../../services/msal.service/msal.service');
 var TodoComponent = (function () {
-    function TodoComponent(todoListService) {
+    function TodoComponent(todoListService, msalService) {
         this.todoListService = todoListService;
+        this.msalService = msalService;
         this.error = "";
         this.loadingMessage = "Loading...";
         this.todoItems = [];
         this.newTodoCaption = "";
-        this.authResponse = hello('adB2CSignInSignUp').getAuthResponse();
         this.baseId = 0;
     }
     TodoComponent.prototype.populate = function () {
-        var config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+        var config = { headers: { Authorization: 'Bearer ' + this.msalService.access_token } };
         this.todoListService.getItems(config).then(function (results) {
             this.todoItems = results.data;
             this.loadingMessage = "";
@@ -33,7 +33,7 @@ var TodoComponent = (function () {
     };
     ;
     TodoComponent.prototype.delete = function (id) {
-        var config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+        var config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.access_token } };
         this.todoListService.deleteItem(id, config).then(function () {
             this.loadingMessage = "";
             this.populate();
@@ -44,7 +44,7 @@ var TodoComponent = (function () {
     };
     ;
     TodoComponent.prototype.add = function () {
-        var config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+        var config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.access_token } };
         this.todoListService.postItem({
             'Id': this.baseId,
             'Text': this.newTodoCaption,
@@ -64,9 +64,9 @@ var TodoComponent = (function () {
         core_1.Component({
             selector: 'todo-list',
             templateUrl: './todo.html',
-            providers: [todo_service_1.TodoService]
+            providers: [todo_service_1.TodoService, msal_service_1.MsalService]
         }), 
-        __metadata('design:paramtypes', [todo_service_1.TodoService])
+        __metadata('design:paramtypes', [todo_service_1.TodoService, msal_service_1.MsalService])
     ], TodoComponent);
     return TodoComponent;
 }());

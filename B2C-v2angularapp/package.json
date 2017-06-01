@@ -24,16 +24,11 @@
     "@angular/upgrade": "2.4.5",
     "bootstrap": "3.3.7",
     "jquery": "3.2.1",
-    // A friendly way for poping up alert message. 
     "bootbox": "4.4.0",
-    // Angular Decorators Dependencies
     "core-js": "^2.4.1",
-    // Angular General Dependecies
     "rxjs": "5.0.1",
     "systemjs": "0.19.39",
-    "zone.js": "^0.7.4",
-    // Microsoft Authentication Library
-    "msal":"0.1.1"
+    "zone.js": "^0.7.4"
   },
   "devDependencies": {
     "concurrently": "^3.0.0",

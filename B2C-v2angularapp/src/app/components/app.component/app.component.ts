@@ -1,35 +1,27 @@
-import { Component } from '@angular/core';
-import { Location }  from '@angular/common';
-
-declare var bootbox: any;
-declare function require(name: string) : any;
-var hello = require('../../../lib/hello.all.js');
+import { Component }    from '@angular/core';
+import { Location }     from '@angular/common';
+import { MsalService }  from '../../services/msal.service/msal.service';
 
 @Component({
   selector: 'todo-app',
   templateUrl: './app.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [MsalService]
 })
 
 export class AppComponent {
 
     constructor(
-      private location: Location
+      private location: Location,
+      private msalService: MsalService
     ){}
 
     login(): void {
-        hello(hello.aadb2c.policyName).login({ display: 'page' }).then(function (auth: any) {
-        }, function (e: any) {
-            bootbox.alert('Signin error: ' + e.error.message);
-        });
-    };
+        this.msalService.login();
+    }
     
     logout(): void {
-        hello.logout(hello.aadb2c.policyName, { force: true }).then(function (auth: any) {
-            bootbox.alert('You are logging out from AD B2C');
-        }, function (e: any) {
-            bootbox.alert('Logout error: ' + e.error.message);
-        });
+        this.msalService.logout();
     };
 
     isActive(viewLocation: any): boolean {        
@@ -37,8 +29,6 @@ export class AppComponent {
     };
 
     isOnline(): boolean {
-        let currentTime = (new Date()).getTime() / 1000;
-        let session = hello(hello.aadb2c.policyName).getAuthResponse();
-        return session && session.access_token && session.expires > currentTime;
+        return this.msalService.isOnline();
     };
 }

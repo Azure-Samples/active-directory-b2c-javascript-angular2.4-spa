@@ -10,24 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
-var hello = require('../../../lib/hello.all.js');
+var msal_service_1 = require('../../services/msal.service/msal.service');
 var AppComponent = (function () {
-    function AppComponent(location) {
+    function AppComponent(location, msalService) {
         this.location = location;
+        this.msalService = msalService;
     }
     AppComponent.prototype.login = function () {
-        hello(hello.aadb2c.policyName).login({ display: 'page' }).then(function (auth) {
-        }, function (e) {
-            bootbox.alert('Signin error: ' + e.error.message);
-        });
+        this.msalService.login();
     };
-    ;
     AppComponent.prototype.logout = function () {
-        hello.logout(hello.aadb2c.policyName, { force: true }).then(function (auth) {
-            bootbox.alert('You are logging out from AD B2C');
-        }, function (e) {
-            bootbox.alert('Logout error: ' + e.error.message);
-        });
+        this.msalService.logout();
     };
     ;
     AppComponent.prototype.isActive = function (viewLocation) {
@@ -35,18 +28,17 @@ var AppComponent = (function () {
     };
     ;
     AppComponent.prototype.isOnline = function () {
-        var currentTime = (new Date()).getTime() / 1000;
-        var session = hello(hello.aadb2c.policyName).getAuthResponse();
-        return session && session.access_token && session.expires > currentTime;
+        return this.msalService.isOnline();
     };
     ;
     AppComponent = __decorate([
         core_1.Component({
             selector: 'todo-app',
             templateUrl: './app.html',
-            styleUrls: ['./app.component.css']
+            styleUrls: ['./app.component.css'],
+            providers: [msal_service_1.MsalService]
         }), 
-        __metadata('design:paramtypes', [common_1.Location])
+        __metadata('design:paramtypes', [common_1.Location, msal_service_1.MsalService])
     ], AppComponent);
     return AppComponent;
 }());

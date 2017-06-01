@@ -1,13 +1,11 @@
 import { Component }   from '@angular/core';
-import { TodoService } from '../../services/todo.service';
-
-declare function require(name: string) : any;
-var hello = require('../../../lib/hello.all.js');
+import { TodoService } from '../../services/todo.service/todo.service';
+import { MsalService}  from '../../services/msal.service/msal.service';
 
 @Component({
     selector: 'todo-list',
     templateUrl: './todo.html',
-	providers: [TodoService]
+	providers: [TodoService, MsalService]
 })
 
 export class TodoComponent {
@@ -15,15 +13,16 @@ export class TodoComponent {
 	loadingMessage = "Loading...";
 	todoItems: Array<String> = [];
 	newTodoCaption = "";
-	authResponse = hello('adB2CSignInSignUp').getAuthResponse();
 	baseId = 0;
 
     constructor(
-     	private todoListService: TodoService
+     	private todoListService: TodoService,
+		private msalService: MsalService
     ){}
 
+
     populate(): void {
-		let config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+		let config = { headers: { Authorization: 'Bearer ' + this.msalService.access_token } };
 		this.todoListService.getItems(config).then(function (results: {data: Array<Number>}) {
 			this.todoItems = results.data;
 			this.loadingMessage = "";
@@ -34,7 +33,7 @@ export class TodoComponent {
     };
 
     delete(id: number): void {
-		let config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+		let config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.access_token } };
 		this.todoListService.deleteItem(id, config).then(function () {
 			this.loadingMessage = "";
 			this.populate();
@@ -45,7 +44,7 @@ export class TodoComponent {
     };
 
     add(): void {
-		let config = { headers: { Authorization: this.authResponse.token_type + ' ' + this.authResponse.access_token } };
+		let config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.access_token } };
 		this.todoListService.postItem({
 			'Id': this.baseId,
 			'Text': this.newTodoCaption,
