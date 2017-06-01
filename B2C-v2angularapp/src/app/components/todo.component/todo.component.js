@@ -17,7 +17,6 @@ var TodoComponent = (function () {
         this.error = "";
         this.loadingMessage = "Loading...";
         this.todoItems = [];
-        this.editingInProgress = false;
         this.newTodoCaption = "";
         this.authResponse = hello('adB2CSignInSignUp').getAuthResponse();
         this.baseId = 0;

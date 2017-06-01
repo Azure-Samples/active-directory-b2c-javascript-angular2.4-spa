@@ -14,7 +14,6 @@ export class TodoComponent {
 	error = "";
 	loadingMessage = "Loading...";
 	todoItems: Array<String> = [];
-	editingInProgress = false;
 	newTodoCaption = "";
 	authResponse = hello('adB2CSignInSignUp').getAuthResponse();
 	baseId = 0;

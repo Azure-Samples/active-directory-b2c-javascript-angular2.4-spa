@@ -28,8 +28,8 @@ var AppModule = (function () {
         //These values need to be updated with the specific tenant and its policies.
         this.tenantName = "stevenzhou.onmicrosoft.com";
         this.signInSignUpPolicyName = "B2C_1_TestSignInSignUp01";
-        this.post_login_redirect_uri = "http://localhost:3002/redirect.html";
-        this.post_logout_redirect_uri = "http://localhost:3002";
+        this.post_login_redirect_uri = "http://localhost:3000/redirect.html";
+        this.post_logout_redirect_uri = "http://localhost:3000";
         this.applicationId = 'aa4c1c98-f36a-4876-8d0c-d9b48a85fed3';
         /*
          * B2C SignIn SignUp Policy Configuration
