@@ -7,7 +7,6 @@ declare var Msal: any;
 export class MsalService {
     
     access_token: string;
-    id_token: string;
 
     //These values need to be updated with the specific tenant and its policies.
     applicationConfig = {
@@ -28,9 +27,6 @@ export class MsalService {
 
     login(): void {
         this.clientApplication.loginPopup(this.applicationConfig.b2cScopes).then(function (idToken: any) {
-            
-            this.id_token = idToken;
-
             this.clientApplication.acquireTokenSilent(this.applicationConfig.b2cScopes).then(
                 function (accessToken: any) {
                     this.access_token = accessToken;

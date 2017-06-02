@@ -26,7 +26,6 @@ var MsalService = (function () {
     }
     MsalService.prototype.login = function () {
         this.clientApplication.loginPopup(this.applicationConfig.b2cScopes).then(function (idToken) {
-            this.id_token = idToken;
             this.clientApplication.acquireTokenSilent(this.applicationConfig.b2cScopes).then(function (accessToken) {
                 this.access_token = accessToken;
             }, function (error) {
