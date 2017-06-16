@@ -24,6 +24,7 @@
     "@angular/upgrade": "2.4.5",
     "bootstrap": "3.3.7",
     "jquery": "3.2.1",
+    "typings": "^2.0.0",
     "bootbox": "4.4.0",
     "core-js": "^2.4.1",
     "rxjs": "5.0.1",
@@ -35,6 +36,6 @@
     "http-server": "^0.9.0",
     "tslint": "^3.15.1",
     "typescript": "~2.0.2",
-    "lite-server":"^2.3.0"
+    "lite-server": "^2.3.0"
   }
 }
