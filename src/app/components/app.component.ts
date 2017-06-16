@@ -1,6 +1,6 @@
 import { Component }    from '@angular/core';
 import { Location }     from '@angular/common';
-import { MsalService }  from '../../services/msal.service/msal.service';
+import { MsalService }  from '../services/msal.service';
 
 @Component({
   selector: 'todo-app',

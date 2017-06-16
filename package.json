@@ -2,6 +2,7 @@
   "name": "angular2-adb2c-sample-app",
   "version": "1.0.0",
   "scripts": {
+    "clean": "rm -rf dist",
     "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
     "build": "tsc -p src/",
     "build:watch": "tsc -p src/ -w",
