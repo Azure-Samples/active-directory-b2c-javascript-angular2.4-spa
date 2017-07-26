@@ -1,15 +1,15 @@
 import { Component }    from '@angular/core';
 import { Location }     from '@angular/common';
-import { MsalService }  from '../../services/msal.service/msal.service';
+import { MsalService }  from '../services/msal.service';
 
 @Component({
   selector: 'todo-app',
-  templateUrl: './app.html',
-  styleUrls: ['./app.component.css'],
+  templateUrl: './home.html',
+  styleUrls: ['./home.component.css'],
   providers: [MsalService]
 })
 
-export class AppComponent {
+export class HomeComponent {
 
     constructor(
       private location: Location,

@@ -1,6 +1,6 @@
 import { Component }   from '@angular/core';
-import { TodoService } from '../../services/todo.service/todo.service';
-import { MsalService}  from '../../services/msal.service/msal.service';
+import { TodoService } from '../services/todo.service';
+import { MsalService}  from '../services/msal.service';
 
 @Component({
     selector: 'todo-list',
