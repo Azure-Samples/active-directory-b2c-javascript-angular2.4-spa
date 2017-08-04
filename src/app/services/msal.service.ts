@@ -17,7 +17,7 @@ export class MsalService {
     
     // Configure the authority for Azure AD B2C
 
-    authority = "https://login.microsoft.online.com/tfp/" + this.tenantConfig.tenant + "/" + this.tenantConfig.signUpSignInPolicy;
+    authority = "https://login.microsoftonline.com/tfp/" + this.tenantConfig.tenant + "/" + this.tenantConfig.signUpSignInPolicy;
 
     /*
      * B2C SignIn SignUp Policy Configuration
