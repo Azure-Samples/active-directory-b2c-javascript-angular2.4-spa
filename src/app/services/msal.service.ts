@@ -8,25 +8,29 @@ export class MsalService {
     
     access_token: string;
 
-    //These values need to be updated with the specific tenant and its policies.
-    applicationConfig = {
-        clientID: 'aa4c1c98-f36a-4876-8d0c-d9b48a85fed3',
-        authority: "https://login.microsoftonline.com/tfp/stevenzhou.onmicrosoft.com/B2C_1_TestSignInSignUp01",
-        b2cScopes: ["https://stevenzhou.onmicrosoft.com/Tasks/read"]
+    tenantConfig = {
+        tenant: "fabrikamb2c.onmicrosoft.com",
+        clientID: '90c0fe63-bcf2-44d5-8fb7-b8bbc0b29dc6',
+        signUpSignInPolicy: "b2c_1_susi",
+        b2cScopes: ["https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read"]
     };
     
+    // Configure the authority for Azure AD B2C
+
+    authority = "https://login.microsoftonline.com/tfp/" + this.tenantConfig.tenant + "/" + this.tenantConfig.signUpSignInPolicy;
+
     /*
      * B2C SignIn SignUp Policy Configuration
      */
     clientApplication = new Msal.UserAgentApplication(
-        this.applicationConfig.clientID, this.applicationConfig.authority, 
+        this.tenantConfig.clientID, this.authority, 
         function (errorDesc: any, token: any, error: any, tokenType: any) {
             // Called after loginRedirect or acquireTokenPopup
         }
     );
 
     login(): void {
-        this.clientApplication.loginPopup(this.applicationConfig.b2cScopes).then(function (idToken: any) {
+        this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
             this.clientApplication.acquireTokenSilent(this.applicationConfig.b2cScopes).then(
                 function (accessToken: any) {
                     this.access_token = accessToken;
