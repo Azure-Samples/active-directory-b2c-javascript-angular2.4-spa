@@ -47,15 +47,12 @@ Now you can replace the app's default configuration with your own.
 1. Find the assignment for `authority` and replacing `b2c_1_susi`by the name of the policy you created in Step 2, and `fabrikamb2c.onmicrosoft.com` by the name of the Azure AD B2C tenant.
 
 ```javascript
-<script class="pre">
-  // The current application coordinates were pre-registered in a B2C tenant.
-  var applicationConfig = {
-    clientID: 'e760cab2-b9a1-4c0d-86fb-ff7084abd902',
-    authority: "https://login.microsoftonline.com/tfp/fabrikamb2c.onmicrosoft.com/b2c_1_susi",
-    b2cScopes: ["https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read"],
-    webApi: 'https://fabrikamb2chello.azurewebsites.net/hello',
-  };
-</script>
+tenantConfig = {
+    tenant: "fabrikamb2c.onmicrosoft.com",
+    clientID: '90c0fe63-bcf2-44d5-8fb7-b8bbc0b29dc6',
+    signUpSignInPolicy: "b2c_1_susi",
+    b2cScopes: ["https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read"]
+};
 ```
 
 ### Step 5: Run the sample
@@ -86,7 +83,5 @@ If you find and bug or have a feature request, please raise the issue on [GitHub
 To provide a recommendation, visit our [Feedback Forum](http://aka.ms/aadb2cuv).
 
 ## Contributing
-If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
->>>>>>> master
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
