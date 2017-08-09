@@ -31,11 +31,11 @@ export class MsalService {
 
     login(): void {
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
-            this.clientApplication.acquireTokenSilent(this.applicationConfig.b2cScopes).then(
+            this.clientApplication.acquireTokenSilent(this.tenantConfig.b2cScopes).then(
                 function (accessToken: any) {
                     this.access_token = accessToken;
                 }, function (error: any) {
-                    this.clientApplication.acquireTokenPopup(this.applicationConfig.b2cScopes).then(
+                    this.clientApplication.acquireTokenPopup(this.tenantConfig.b2cScopes).then(
                         function (accessToken: any) {
                             this.access_token = accessToken;
                         }, function (error: any) {
