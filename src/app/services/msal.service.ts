@@ -1,8 +1,6 @@
-import { Injectable }       from '@angular/core';
-
+import { Injectable } from '@angular/core';
 declare var bootbox: any;
-declare var Msal: any;
-
+declare var Msal:any;
 @Injectable()
 export class MsalService {
     
@@ -29,15 +27,16 @@ export class MsalService {
         }
     );
 
-    login(): void {
+    public login(): void {
+       var _this = this;
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
-            this.clientApplication.acquireTokenSilent(this.tenantConfig.b2cScopes).then(
+            _this.clientApplication.acquireTokenSilent(_this.tenantConfig.b2cScopes).then(
                 function (accessToken: any) {
-                    this.access_token = accessToken;
+                    _this.access_token = accessToken;
                 }, function (error: any) {
-                    this.clientApplication.acquireTokenPopup(this.tenantConfig.b2cScopes).then(
+                    _this.clientApplication.acquireTokenPopup(_this.tenantConfig.b2cScopes).then(
                         function (accessToken: any) {
-                            this.access_token = accessToken;
+                            _this.access_token = accessToken;
                         }, function (error: any) {
                             bootbox.alert("Error acquiring the popup:\n" + error);
                         });
