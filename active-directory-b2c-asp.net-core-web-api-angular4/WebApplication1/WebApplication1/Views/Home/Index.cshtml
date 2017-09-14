@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+<script src="~/dist/bluebird.min.js" asp-append-version="true" class="pre"></script>
+<script src="~/dist/msal.js" asp-append-version="true"></script>
+<script src="~/dist/bootbox.min.js" asp-append-version="true"></script>
+<script src="~/dist/shim.min.js" asp-append-version="true"></script>
+<script src="~/dist/system.src.js" asp-append-version="true"></script>
+
+<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
+
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
+@section scripts {
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
+}
