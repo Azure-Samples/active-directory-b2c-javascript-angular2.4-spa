@@ -9,10 +9,10 @@ export class MsalService {
     access_token: string;
     clientApplication : any;
     tenantConfig = {
-        tenant: "fabrikamb2c.onmicrosoft.com",
-        clientID: '90c0fe63-bcf2-44d5-8fb7-b8bbc0b29dc6',
-        signUpSignInPolicy: "b2c_1_susi",
-        b2cScopes: ["https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read"]
+        tenant: "KopB2Ctest.onmicrosoft.com",
+        clientID: '0fc2918c-8869-4a20-a785-12d176eecd80',
+        signUpSignInPolicy: "B2C_1_MailRegister",
+        b2cScopes: ["openid"]
     };
 
     // Configure the authority for Azure AD B2C
@@ -31,6 +31,7 @@ export class MsalService {
                     // Called after loginRedirect or acquireTokenPopup
                 }
             );
+            this.clientApplication.redirectUri = "http://localhost:62189";
         } catch (ex)
         {}
     }
