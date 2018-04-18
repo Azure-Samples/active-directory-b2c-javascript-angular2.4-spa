@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 declare var bootbox: any;
 declare var Msal:any;
 @Injectable()
 export class MsalService {
-    
-    access_token: string;
+
+    B2CTodoAccessTokenKey = "b2c.todo.access.token";
 
     tenantConfig = {
         tenant: "fabrikamb2c.onmicrosoft.com",
@@ -14,7 +16,6 @@ export class MsalService {
     };
     
     // Configure the authority for Azure AD B2C
-
     authority = "https://login.microsoftonline.com/tfp/" + this.tenantConfig.tenant + "/" + this.tenantConfig.signUpSignInPolicy;
 
     /*
@@ -28,15 +29,15 @@ export class MsalService {
     );
 
     public login(): void {
-       var _this = this;
+        var _this = this;
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
             _this.clientApplication.acquireTokenSilent(_this.tenantConfig.b2cScopes).then(
                 function (accessToken: any) {
-                    _this.access_token = accessToken;
+                    _this.saveAccessTokenToCache(accessToken);
                 }, function (error: any) {
                     _this.clientApplication.acquireTokenPopup(_this.tenantConfig.b2cScopes).then(
                         function (accessToken: any) {
-                            _this.access_token = accessToken;
+                            _this.saveAccessTokenToCache(accessToken);
                         }, function (error: any) {
                             bootbox.alert("Error acquiring the popup:\n" + error);
                         });
@@ -45,7 +46,11 @@ export class MsalService {
             bootbox.alert("Error during login:\n" + error);
         });
     }
-    
+
+    saveAccessTokenToCache(accessToken: string): void {
+        sessionStorage.setItem(this.B2CTodoAccessTokenKey, accessToken);
+    };
+
     logout(): void {
         this.clientApplication.logout();
     };

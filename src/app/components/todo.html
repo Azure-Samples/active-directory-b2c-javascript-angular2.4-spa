@@ -1,4 +1,4 @@
-﻿<div ng-init="populate()">
+﻿<div>
     <p class="error">{{error}}</p>
     <p>{{loadingMessage}}</p>
     <div class="panel">
@@ -11,10 +11,10 @@
         <table class="table table-striped">
             <tbody>
                 <tr *ngFor="let item of todoItems">
-                    <td>
+                    <td style="text-align:left;">
                         <p>{{item.Text}}</p>                    
                     </td>
-                    <td>
+                    <td style="text-align:right;">
                         <p>
                             <a (click)="delete(item.Id)" href="javascript:;">Delete</a>
                         </p>          
