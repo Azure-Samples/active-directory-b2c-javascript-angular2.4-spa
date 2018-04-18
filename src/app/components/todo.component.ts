@@ -25,6 +25,8 @@ export class TodoComponent implements OnInit{
 	ngOnInit() {
 		if(this.getAccessTokenFromCache()) {
 			this.populate();
+		} else {
+			throw "Access token does not exist for todo app.";
 		}
 	};
 
@@ -32,9 +34,8 @@ export class TodoComponent implements OnInit{
 		if (sessionStorage.hasOwnProperty(this.msalService.B2CTodoAccessTokenKey) && sessionStorage[this.msalService.B2CTodoAccessTokenKey] !== "") {
 			this.access_token = sessionStorage[this.msalService.B2CTodoAccessTokenKey];
 			return true;
-		} else {
-			throw "Access token does not exist for todo app.";
-		}
+		} 
+		return false;
 	};
 
     populate(): void {
