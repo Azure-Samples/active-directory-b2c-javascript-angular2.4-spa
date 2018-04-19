@@ -4,6 +4,7 @@ import { HttpModule }           from '@angular/http';
 import { NgModule }		        from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AppComponent }        from '../components/app.component';
 import { HomeComponent }        from '../components/home.component';
 import { TodoComponent }        from '../components/todo.component';
 import { TodoService }          from '../services/todo.service';
@@ -19,13 +20,14 @@ const routes: Routes = [
     imports: [ FormsModule, BrowserModule, HttpModule, RouterModule.forRoot(routes, { useHash: true }) ],
     declarations: [
         HomeComponent,
-        TodoComponent
+        TodoComponent,
+        AppComponent
     ],
     providers: [
         TodoService,
         MsalService
     ],
-    bootstrap: [HomeComponent]
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {
