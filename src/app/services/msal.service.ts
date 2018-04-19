@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import { Observer } from 'rxjs/Observer';
 
 declare var bootbox: any;
 declare var Msal:any;
@@ -7,6 +9,8 @@ declare var Msal:any;
 export class MsalService {
 
     B2CTodoAccessTokenKey = "b2c.todo.access.token";
+    observer: Observer<boolean>;
+    IsTodoReady = new Observable<boolean>((observer: Observer<boolean>) => (this.observer = observer));
 
     tenantConfig = {
         tenant: "fabrikamb2c.onmicrosoft.com",
@@ -29,15 +33,17 @@ export class MsalService {
     );
 
     public login(): void {
-        var _this = this;
+        var self = this;
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
-            _this.clientApplication.acquireTokenSilent(_this.tenantConfig.b2cScopes).then(
+            self.clientApplication.acquireTokenSilent(self.tenantConfig.b2cScopes).then(
                 function (accessToken: any) {
-                    _this.saveAccessTokenToCache(accessToken);
+                    sessionStorage.setItem(self.B2CTodoAccessTokenKey, accessToken);
+                    self.observer.next(true);
                 }, function (error: any) {
-                    _this.clientApplication.acquireTokenPopup(_this.tenantConfig.b2cScopes).then(
+                    self.clientApplication.acquireTokenPopup(self.tenantConfig.b2cScopes).then(
                         function (accessToken: any) {
-                            _this.saveAccessTokenToCache(accessToken);
+                            sessionStorage.setItem(self.B2CTodoAccessTokenKey, accessToken);
+                            self.observer.next(true);
                         }, function (error: any) {
                             bootbox.alert("Error acquiring the popup:\n" + error);
                         });
@@ -45,10 +51,6 @@ export class MsalService {
         }, function (error: any) {
             bootbox.alert("Error during login:\n" + error);
         });
-    }
-
-    saveAccessTokenToCache(accessToken: string): void {
-        sessionStorage.setItem(this.B2CTodoAccessTokenKey, accessToken);
     };
 
     logout(): void {

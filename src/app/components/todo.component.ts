@@ -23,11 +23,12 @@ export class TodoComponent implements OnInit{
     ){}
 
 	ngOnInit() {
-		if(this.getAccessTokenFromCache()) {
-			this.populate();
-		} else {
-			throw "Access token does not exist for todo app.";
-		}
+		this.msalService.IsTodoReady.subscribe(function(result: boolean){
+			if (result) {
+				this.getAccessTokenFromCache();
+				this.populate();
+			}
+		}.bind(this));
 	};
 
 	getAccessTokenFromCache(): boolean {
@@ -40,6 +41,7 @@ export class TodoComponent implements OnInit{
 
     populate(): void {
 		var _this = this;
+		if (this.access_token === undefined) return; 
 		let config = { headers: { Authorization: 'Bearer ' + this.access_token } };
 		this.todoListService.getItems(config).subscribe(function (results: any) {
 			_this.todoItems = JSON.parse(results._body);
@@ -50,7 +52,7 @@ export class TodoComponent implements OnInit{
 		});
     };
 
-    delete(id: number): void {
+    delete(id: number, event: any): void {
 		var _this = this;
 		let config = { headers: { Authorization: 'Bearer' + ' ' + this.access_token } };
 		this.todoListService.deleteItem(id, config).subscribe(function () {
@@ -60,9 +62,10 @@ export class TodoComponent implements OnInit{
 			_this.error = err;
 			_this.loadingMessage = "";
 		});
+		event.stopPropagation();
     };
 
-    add(): void {
+    add(event: any): void {
 		var _this = this;
 		let config = { headers: { Authorization: 'Bearer' + ' ' + this.access_token } };
 		this.todoListService.postItem({
@@ -78,5 +81,6 @@ export class TodoComponent implements OnInit{
 			_this.error = err;
 			_this.loadingMessage = "";
 		});
+		event.stopPropagation();
      };
 }

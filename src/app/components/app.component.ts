@@ -1,4 +1,4 @@
-import { Component }    from '@angular/core';
+import { Component, OnInit }    from '@angular/core';
 import { Location }     from '@angular/common';
 import { MsalService }  from '../services/msal.service';
 
@@ -10,12 +10,23 @@ declare var msal:any;
   styleUrls: ['./app.component.css'],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
+
+    showTodoOption: boolean;
 
     constructor(
       private location: Location,
       private msalService: MsalService
     ){}
+
+    ngOnInit() {
+        this.msalService.IsTodoReady.subscribe(function(result:boolean){
+            if(result) {
+                console.log(result);
+                this.showTodoOption = result;
+            }
+        }.bind(this));
+    }
 
     login(): void {
         this.msalService.login();
@@ -31,6 +42,10 @@ export class AppComponent {
     };
 
     isOnline(): boolean {
+        return this.msalService.isOnline();
+    };
+
+    isTodoReady(): boolean {
         return this.msalService.isOnline();
     };
 }
