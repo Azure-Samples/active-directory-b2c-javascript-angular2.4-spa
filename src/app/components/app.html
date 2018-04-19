@@ -13,7 +13,7 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li [class]="{ active: isActive('/Home') }"><a routerLink="/home">Home</a></li>
-        <li [class]="{ active: isActive('/TodoList') }"><a routerLink="/todo" [hidden]="!isOnline()">Todo List</a></li>
+        <li [class]="{ active: isActive('/TodoList') }"><a routerLink="/todo" [hidden]="true">Todo List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a class="btn btn-link" [hidden]="!isOnline()" (click)="logout()">Logout</a></li>
