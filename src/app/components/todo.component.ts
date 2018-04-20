@@ -1,6 +1,7 @@
 import { Component, OnInit }   from '@angular/core';
 import { TodoService } from '../services/todo.service';
 import { MsalService}  from '../services/msal.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './todo.html',
@@ -9,7 +10,7 @@ import { MsalService}  from '../services/msal.service';
 
 export class TodoComponent implements OnInit{
 
-	access_token: string;
+	isTodoReady = false;
 
 	error = "";
 	loadingMessage = "Loading...";
@@ -19,33 +20,29 @@ export class TodoComponent implements OnInit{
 
     constructor(
      	private todoListService: TodoService,
-		private msalService: MsalService
+		private msalService: MsalService,
+		private router: Router
     ){}
 
 	ngOnInit() {
-		this.msalService.IsTodoReady.subscribe(function(result: boolean){
-			if (result) {
-				this.getAccessTokenFromCache();
+		// Order matters here as this one has to be called first so that the observer can be initialzied and ready to use in the function below.
+		this.msalService.isAccessTokenReady.subscribe(function(result:boolean){
+            if(result) {
 				this.populate();
+            } else {
+				this.loadingMessage = "Sorry. You don't have access. Please login! :)"
 			}
-		}.bind(this));
-	};
-
-	getAccessTokenFromCache(): boolean {
-		if (sessionStorage.hasOwnProperty(this.msalService.B2CTodoAccessTokenKey) && sessionStorage[this.msalService.B2CTodoAccessTokenKey] !== "") {
-			this.access_token = sessionStorage[this.msalService.B2CTodoAccessTokenKey];
-			return true;
-		} 
-		return false;
+        }.bind(this));
+		this.msalService.updateAccessTokenStatus();
 	};
 
     populate(): void {
 		var _this = this;
-		if (this.access_token === undefined) return; 
-		let config = { headers: { Authorization: 'Bearer ' + this.access_token } };
+		let config = { headers: { Authorization: 'Bearer ' + this.msalService.accessToken } };
 		this.todoListService.getItems(config).subscribe(function (results: any) {
 			_this.todoItems = JSON.parse(results._body);
 			_this.loadingMessage = "";
+			_this.isTodoReady = true;
 		}, function (err: any) {
 			_this.error = err;
 			_this.loadingMessage = "";
@@ -54,7 +51,7 @@ export class TodoComponent implements OnInit{
 
     delete(id: number, event: any): void {
 		var _this = this;
-		let config = { headers: { Authorization: 'Bearer' + ' ' + this.access_token } };
+		let config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.accessToken } };
 		this.todoListService.deleteItem(id, config).subscribe(function () {
 			_this.loadingMessage = "";
 			_this.populate();
@@ -67,7 +64,7 @@ export class TodoComponent implements OnInit{
 
     add(event: any): void {
 		var _this = this;
-		let config = { headers: { Authorization: 'Bearer' + ' ' + this.access_token } };
+		let config = { headers: { Authorization: 'Bearer' + ' ' + this.msalService.accessToken } };
 		this.todoListService.postItem({
 			'Id': _this.baseId,
 			'Text': _this.newTodoCaption,
@@ -81,6 +78,8 @@ export class TodoComponent implements OnInit{
 			_this.error = err;
 			_this.loadingMessage = "";
 		});
+		// Looks like the child component event would propagate to parent where parent component will also trigger the click for another time.
+		// This should prevent it from happening and ensure only one click would happen which is as expected.
 		event.stopPropagation();
      };
 }

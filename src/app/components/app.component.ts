@@ -16,13 +16,13 @@ export class AppComponent implements OnInit{
 
     constructor(
       private location: Location,
-      private msalService: MsalService
+      private msalService: MsalService,
     ){}
 
     ngOnInit() {
-        this.msalService.IsTodoReady.subscribe(function(result:boolean){
+        // Order matters here as this one has to be called so that the observer can be initialzied.
+        this.msalService.isAccessTokenReady.subscribe(function(result:boolean){
             if(result) {
-                console.log(result);
                 this.showTodoOption = result;
             }
         }.bind(this));
@@ -42,10 +42,6 @@ export class AppComponent implements OnInit{
     };
 
     isOnline(): boolean {
-        return this.msalService.isOnline();
-    };
-
-    isTodoReady(): boolean {
         return this.msalService.isOnline();
     };
 }

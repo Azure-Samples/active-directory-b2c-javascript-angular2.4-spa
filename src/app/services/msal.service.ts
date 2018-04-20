@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { Observer } from 'rxjs/Observer';
+import 'rxjs/add/observable/of';
+import "rxjs/add/operator/share";
 
 declare var bootbox: any;
 declare var Msal:any;
 @Injectable()
 export class MsalService {
 
-    B2CTodoAccessTokenKey = "b2c.todo.access.token";
-    observer: Observer<boolean>;
-    IsTodoReady = new Observable<boolean>((observer: Observer<boolean>) => (this.observer = observer));
+    B2CAccessTokenKey = "b2c.access.token.key";
+    accessTokenObserver: Observer<boolean>;
+    isAccessTokenReady = new Observable<boolean>((observer: Observer<boolean>) => (this.accessTokenObserver = observer)).share();
+    accessToken: string;
 
     tenantConfig = {
         tenant: "fabrikamb2c.onmicrosoft.com",
@@ -37,13 +39,13 @@ export class MsalService {
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes).then(function (idToken: any) {
             self.clientApplication.acquireTokenSilent(self.tenantConfig.b2cScopes).then(
                 function (accessToken: any) {
-                    sessionStorage.setItem(self.B2CTodoAccessTokenKey, accessToken);
-                    self.observer.next(true);
+                    sessionStorage.setItem(self.B2CAccessTokenKey, accessToken);
+                    self.updateAccessTokenStatus();
                 }, function (error: any) {
                     self.clientApplication.acquireTokenPopup(self.tenantConfig.b2cScopes).then(
                         function (accessToken: any) {
-                            sessionStorage.setItem(self.B2CTodoAccessTokenKey, accessToken);
-                            self.observer.next(true);
+                            sessionStorage.setItem(self.B2CAccessTokenKey, accessToken);
+                            self.updateAccessTokenStatus();
                         }, function (error: any) {
                             bootbox.alert("Error acquiring the popup:\n" + error);
                         });
@@ -51,6 +53,15 @@ export class MsalService {
         }, function (error: any) {
             bootbox.alert("Error during login:\n" + error);
         });
+    };
+
+    updateAccessTokenStatus(): void{
+        if (sessionStorage.hasOwnProperty(this.B2CAccessTokenKey) && sessionStorage[this.B2CAccessTokenKey] !== "") {
+            this.accessToken = sessionStorage[this.B2CAccessTokenKey];
+            this.accessTokenObserver.next(true);
+        } else {
+            this.accessTokenObserver.next(false);
+        }
     };
 
     logout(): void {

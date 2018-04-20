@@ -1,7 +1,7 @@
 ﻿<div>
     <p class="error">{{error}}</p>
     <p>{{loadingMessage}}</p>
-    <div class="panel">
+    <div class="panel" *ngIf="isTodoReady">
         <div class="input-group">
             <input [(ngModel)]="newTodoCaption" class="form-control" />
             <span class="input-group-btn">
