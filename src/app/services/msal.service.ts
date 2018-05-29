@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as Msal from 'msal';
 
 declare var bootbox: any;
-declare var Msal:any;
 @Injectable()
 export class MsalService {
 
